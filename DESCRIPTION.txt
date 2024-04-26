@@ -1,0 +1,10 @@
+Package: USFLIS6371Mod10
+Type: Package
+Title: Pathogenic Yeast Dataset Sorting
+Version: 0.1.0
+Author: "Danielle Hannagan <hannagand618@outlook.com> [aut, cre]"
+Maintainer: Danielle Hannagan <hannagand618@outlook.com>
+Description: This package reads and sorts each species of pathogenic yeast in the dataset.
+License: CC0
+Encoding: UTF-8
+LazyData: true
