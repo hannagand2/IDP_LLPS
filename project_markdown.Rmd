@@ -1,0 +1,261 @@
+---
+title: "mod12_project_markdown"
+author: "D.Hannagan"
+date: "2024-03-29"
+output: pdf_document
+---
+
+#Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing #*Cmd+Option+I*.
+
+#CANDIDA AURIS SUBSTRATE ANALYSIS
+
+1)Need to import lab Candida experimental data:
+```{r}
+sth<- read.csv("~/Desktop/BioDatAnalysis/cauris72.csv")
+View(sth)
+```
+
+
+
+2)Need to view data and the summary of experimental:
+```{r}
+head(sth)
+summary(sth)
+```
+
+
+
+
+3) Need to id dimensions:
+```{r}
+ncol(sth)
+nrow(sth) 
+count(sth)
+dim(sth)
+
+```
+
+
+
+
+
+START ANALYSIS BELOW AFTER IMPORTATION
+MULTI-VARIANT ANALYSIS-
+installed the following:
+```{r}
+library(vegan)
+library(stringr)
+library(pROC)
+```
+
+
+
+#re-naming csv, first line did not work:
+```{r}
+dtc<- read.csv("~/Desktop/BioDatAnalysis/cauris72.csv")
+
+```
+
+
+#to view:
+```{r}
+head(dtc)
+summary(dtc)
+```
+
+
+
+
+to convert column and row names to lower case:
+```{r}
+names(dtc) <- tolower(names(dtc))
+```
+
+
+
+
+to plot original data:
+```{r}
+plot(dtc) #margins too large, need to filter out
+
+```
+
+
+
+check progress:
+```{r}
+head(auris)
+```
+
+
+
+
+rename columns:
+```{r}
+names(auris)<-c('isolate','dglu', 'dgal','dmal','sucr','dlac', 'lara', 'draf', 'dxyl', 'glyc', 'mann', 'malt', 'dode', 'dulc')
+```
+
+
+
+check progress:
+```{r}
+head(auris)
+
+```
+
+
+
+#to create a backup dataset:
+```{r}
+names(backup)<-backup$Substrates
+backup$SpeciesIsolate
+backup<-backup[which(names(backup)!="Substrates")]
+backup<-backup[-c(1:3)]
+splitcols<-backup[1:3]
+```
+
+
+
+#puts two differnt columns together:
+```{r}
+nwq<-cbind(splitcols,backup)
+
+```
+
+
+# explore data-filter out columns i dont want:
+```{r}
+apply(dat[,use.cols], 2, range)
+
+```
+
+
+
+#to rename rows:
+```{r}
+rownames(auris)<-c('aur1','aur2','aur3','aur4', 'aur5', 'aur6','aur7', 'aur8','aur9','aur10', 'dha1', 'dha2', 'dha3', 'hae1', 'hae2')
+```
+
+
+
+
+              
+#made a vector-did not use this:
+```{r}
+crd<- c('aur','aur','aur','aur', 'aur', 'aur','aur', 'aur','aur','aur', 'dha', 'dha', 'dha', 'hae', 'hae')
+```
+
+
+
+
+#to check progress:
+```{r}
+head(auris)
+```
+
+
+#to change margins:
+```{r}
+par(mar=c(2,2,2,2))
+```
+
+
+
+#black and white scatterplot matrix:
+```{r}
+pairs(auris[,2:14],lower.panel=NULL)
+```
+
+
+
+#scatter plot matrix:
+```{r}
+mycols <- c("red", "green", "blue")
+```
+
+
+
+#this works to make scatterplot matrix in color:
+```{r}
+pairs(auris[,2:14], pch=19, cex=0.5, col=c('red','red','red','red', 'red', 'red','red', 'red','red','red', 'green', 'green', 'green', 'blue', 'blue'), lower.panel=NULL)
+my_cols <- c("red", "blue", "green3")  
+pairs(auris[,2:4], pch = 19,  cex = 0.5,
+      col = my_cols[auris$isolate],
+      lower.panel=NULL)
+```
+
+
+
+
+
+#to view plot of d galactose and d xylose:
+```{r}
+plot(auris$dgal)
+plot(auris$dxyl)
+```
+
+
+
+#t test of d xylose:
+```{r}
+t.test(auris$dxyl~ifelse(auris$isolate == 'hae', 'hae', 'other'))
+```
+
+
+#t test of d galactose:
+```{r}
+t.test(auris$dgal~ifelse(auris$isolate == 'aur', 'aur', 'other'))
+```
+
+
+
+#to view and check progress:
+```{r}
+view(auris)
+```
+
+
+
+# Need to answer question: "Are auris and haemulonii really different?"
+```{r}
+mod1 <-adonis2(auris[,2:14]~auris$isolate, method="euclidean")
+```
+
+
+
+ #IF have variable=outcomes means overfitting data (not good), need to check:
+```{r}
+print(mod1)
+view(mod1)
+```
+
+
+#to view mod 1:
+```{r}
+mod1
+```
+
+
+# NOTES: So far model does predict =results are highly sig bc Pr (F) 
+#what is the prb that this result is by chance=0.001 (want a small number) 
+#want it to be lower than 0.5
+#R2=correlation coeff squared- want it to be high=predicts % variablity 
+#sumofSq (variability in dataset)=calculates R2
+#Sum of Sq # =how much residual error after model ran
+#residuals= variability in data not predicted by model
+#high F=less likely data is random
+#output is categorical
+
+
+#create citation for R Studio:
+```{r}
+citation()
+```
+
+
+
+
+
+
+
+
