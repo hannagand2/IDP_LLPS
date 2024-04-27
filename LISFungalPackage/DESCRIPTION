@@ -1,0 +1,11 @@
+Package: LISFungalPackage
+Type: Package
+Title: Pathogenic Yeast Dataset Sorting
+Version: 0.1.0
+Author: Author: "Danielle Hannagan <hannagand618@outlook.com> [aut, cre]"
+Maintainer: Danielle Hannagan <hannagand618@outlook.com>
+Description: This package reads, sorts, analyzes each species of pathogenic yeast in the dataset.
+License: GNU
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.1
